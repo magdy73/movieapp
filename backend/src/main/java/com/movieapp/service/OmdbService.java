@@ -1,5 +1,6 @@
 package com.movieapp.service;
 
+import com.movieapp.dto.OmdbMovieDetailsDTO;
 import com.movieapp.dto.OmdbSearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,5 +21,9 @@ public class OmdbService {
     public OmdbSearchResponse searchMovies(String title){
         String url= apiUrl + "?apiKey=" + apiKey + "&s=" +title;
         return restTemplate.getForObject(url,OmdbSearchResponse.class);
+    }
+    public OmdbMovieDetailsDTO getMovieByImdbId(String imdbId){
+        String url= apiUrl + "?apiKey=" + apiKey + "&i=" +imdbId;
+        return  restTemplate.getForObject(url,OmdbMovieDetailsDTO.class);
     }
 }

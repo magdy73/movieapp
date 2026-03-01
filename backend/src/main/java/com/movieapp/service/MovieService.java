@@ -1,5 +1,6 @@
 package com.movieapp.service;
 
+import com.movieapp.dto.OmdbMovieDetailsDTO;
 import com.movieapp.model.Movie;
 import com.movieapp.repository.MovieRepository;
 import lombok.*;
@@ -32,5 +33,21 @@ public class MovieService {
     }
     public void deleteMovie(Long id) {
         movieRepository.deleteById(id);
+    }
+
+    public Movie importMovieFromOmdb(OmdbMovieDetailsDTO dto){
+        Movie movie = new Movie();
+        if(movieRepository.findByTitle(dto.getTitle()).isPresent()) {
+            throw new RuntimeException("Movie already exists");
+        }
+        movie.setTitle(dto.getTitle());
+        movie.setDescription(dto.getPlot());
+        movie.setReleaseYear(Integer.parseInt(dto.getYear()));
+        try {
+            movie.setRating(Double.parseDouble(dto.getImdbRating()));
+        } catch (Exception e) {
+            movie.setRating(0.0);
+        }
+        return movieRepository.save(movie);
     }
 }
