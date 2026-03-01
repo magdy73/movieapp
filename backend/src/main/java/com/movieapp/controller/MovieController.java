@@ -3,6 +3,7 @@ package com.movieapp.controller;
 import com.movieapp.model.Movie;
 import com.movieapp.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,22 +14,30 @@ import java.util.List;
 public class MovieController {
     private final MovieService movieService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addMovie")
     public Movie addMovie(@RequestBody Movie movie) {
         return movieService.addMovie(movie);
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/allMovies")
     public List<Movie> getAllMovies() {
         return movieService.getAllMovies();
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/getMovieById/{id}")
     public Movie getMovieById(@PathVariable Long id) {
         return movieService.getMovieById(id);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/updateMovie/{id}")
     public Movie updateMovie(@PathVariable Long id,@RequestBody Movie movie) {
         return movieService.updateMovie(id,movie);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public void deleteMovie(@PathVariable Long id) {
         movieService.deleteMovie(id);
