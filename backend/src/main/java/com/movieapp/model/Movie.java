@@ -18,7 +18,14 @@ public class Movie {
 
     private String description;
 
-    private Double rating;
+    // جاي من OMDB
+    private Double externalRating;
+
+    // بتاع users عندنا
+    private Double averageRating = 0.0;
+
+    // عدد ال users اللي عملوا rating
+    private Integer totalRatings = 0;
 
     private Integer releaseYear;
 }
