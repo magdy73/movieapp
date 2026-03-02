@@ -24,6 +24,13 @@ public class MovieService {
     public Movie getMovieById(Long id) {
         return movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie not found"));
     }
+    public Page<Movie> searchMovies(String keyword, Pageable pageable) {
+        if(keyword==null||keyword.trim().isEmpty()) {
+            return movieRepository.findAll(pageable);
+        }
+        return movieRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+    }
+
     public Movie updateMovie(Long id,Movie updatedMovie) {
         Movie movie = getMovieById(id);
 
