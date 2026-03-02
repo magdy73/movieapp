@@ -40,6 +40,12 @@ public class MovieController {
         return movieService.getMovieById(id);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @GetMapping("/search")
+    public Page<Movie> searchMovie(@RequestParam String keyword,Pageable pageable) {
+        return movieService.searchMovies(keyword,pageable);
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/updateMovie/{id}")
     public Movie updateMovie(@PathVariable Long id,@RequestBody Movie movie) {
