@@ -3,6 +3,10 @@ package com.movieapp.controller;
 import com.movieapp.model.Movie;
 import com.movieapp.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +26,12 @@ public class MovieController {
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/allMovies")
-    public List<Movie> getAllMovies() {
-        return movieService.getAllMovies();
+    public Page<Movie> getAllMovies(@RequestParam(defaultValue = "0")int page,
+        @RequestParam(defaultValue ="5")int size,
+        @RequestParam(defaultValue = "id,asc")String [] sort)
+    {
+        Pageable pageable= PageRequest.of(page,size, Sort.by(sort[0]).ascending());
+        return movieService.getAllMovies(pageable);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")

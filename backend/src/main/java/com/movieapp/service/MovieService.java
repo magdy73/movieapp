@@ -4,6 +4,8 @@ import com.movieapp.dto.OmdbMovieDetailsDTO;
 import com.movieapp.model.Movie;
 import com.movieapp.repository.MovieRepository;
 import lombok.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +18,8 @@ public class MovieService {
     public Movie addMovie(Movie movie) {
         return movieRepository.save(movie);
     }
-    public List<Movie> getAllMovies(){
-        return movieRepository.findAll();
+    public Page<Movie> getAllMovies(Pageable pageable){
+        return movieRepository.findAll(pageable);
     }
     public Movie getMovieById(Long id) {
         return movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie not found"));
