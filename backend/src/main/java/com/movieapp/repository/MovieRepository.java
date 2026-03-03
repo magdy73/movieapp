@@ -11,4 +11,5 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     Optional<Movie> findByTitle(String title);
 
     Page<Movie> findByTitleContainingIgnoreCase(String keyword,Pageable pageable);
+    boolean existsByImdbId(String imdbId);
 }

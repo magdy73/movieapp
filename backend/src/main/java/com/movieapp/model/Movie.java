@@ -16,6 +16,9 @@ public class Movie {
 
     private String title;
 
+    @Column(unique = true)
+    private String imdbId;
+
     private String description;
 
     // جاي من OMDB

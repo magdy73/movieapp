@@ -20,11 +20,7 @@ public class MovieController {
     private final MovieService movieService;
     private final RatingService ratingService;
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/addMovie")
-    public Movie addMovie(@RequestBody Movie movie) {
-        return movieService.addMovie(movie);
-    }
+
 
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/allMovies")
@@ -65,14 +61,5 @@ public class MovieController {
         return ResponseEntity.ok("Movie rated successfully");
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/updateMovie/{id}")
-    public Movie updateMovie(@PathVariable Long id,@RequestBody Movie movie) {
-        return movieService.updateMovie(id,movie);
-    }
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/delete/{id}")
-    public void deleteMovie(@PathVariable Long id) {
-        movieService.deleteMovie(id);
-    }
+
 }
