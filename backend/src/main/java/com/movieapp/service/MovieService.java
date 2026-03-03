@@ -8,12 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class MovieService {
     private final MovieRepository movieRepository;
+    private final OmdbService omdbService;
 
     public Movie addMovie(Movie movie) {
         return movieRepository.save(movie);
@@ -50,6 +52,7 @@ public class MovieService {
             throw new RuntimeException("Movie already exists");
         }
         movie.setTitle(dto.getTitle());
+        movie.setImdbId(dto.getImdbID());
         movie.setDescription(dto.getPlot());
         movie.setReleaseYear(Integer.parseInt(dto.getYear()));
         try {
@@ -58,5 +61,23 @@ public class MovieService {
             movie.setExternalRating(0.0);
         }
         return movieRepository.save(movie);
+    }
+
+    public void batchAddMovies(List<String> imdbIds){
+        List<Movie> moviesToSave=new ArrayList<>();
+        for(String imdbId : imdbIds) {
+            // if already exists
+        if(movieRepository.existsByImdbId(imdbId)){
+            continue;
+        }
+        OmdbMovieDetailsDTO dto = omdbService.getMovieByImdbId(imdbId);
+        Movie movie = importMovieFromOmdb(dto);
+        moviesToSave.add(movie);
+        }
+        movieRepository.saveAll(moviesToSave);
+    }
+
+    public void batchDeleteMovies(List<Long> ids) {
+        movieRepository.deleteAllById(ids);
     }
 }

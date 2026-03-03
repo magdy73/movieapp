@@ -8,6 +8,9 @@ public class OmdbMovieDetailsDTO {
     @JsonProperty("Title")
     private String title;
 
+    @JsonProperty("imdbID")
+    private String imdbID;
+
     @JsonProperty("Year")
     private String year;
 
