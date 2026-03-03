@@ -36,7 +36,7 @@ public class MovieService {
 
         movie.setTitle(updatedMovie.getTitle());
         movie.setDescription(updatedMovie.getDescription());
-        movie.setRating(updatedMovie.getRating());
+        movie.setExternalRating(updatedMovie.getExternalRating());
         movie.setReleaseYear(updatedMovie.getReleaseYear());
         return movieRepository.save(movie);
     }
@@ -53,9 +53,9 @@ public class MovieService {
         movie.setDescription(dto.getPlot());
         movie.setReleaseYear(Integer.parseInt(dto.getYear()));
         try {
-            movie.setRating(Double.parseDouble(dto.getImdbRating()));
+            movie.setExternalRating(Double.parseDouble(dto.getImdbRating()));
         } catch (Exception e) {
-            movie.setRating(0.0);
+            movie.setExternalRating(0.0);
         }
         return movieRepository.save(movie);
     }
